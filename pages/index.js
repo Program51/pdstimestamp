@@ -1,24 +1,11 @@
 import { useState, useEffect } from "react";
-import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/card";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { initializeApp } from "firebase/app";
 import { collection, addDoc } from "firebase/firestore";
+import { Button } from "/src/components/ui/button";
+import { Card, CardContent } from "/src/components/ui/card";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "/src/firebase"; // นำเข้า Firebase ที่ถูกต้อง
 
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
 
 const SCHOOL_LOCATION = { lat: 13.736717, lng: 100.523186 }; // ตำแหน่งโรงเรียน (ตัวอย่าง)
 const RADIUS = 100; // รัศมีในเมตรที่อนุญาตให้เช็กชื่อ
