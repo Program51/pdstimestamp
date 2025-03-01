@@ -5,8 +5,8 @@ import { getFirestore } from "firebase/firestore";
 import { auth, provider } from "/src/firebase";
 import { signInWithPopup } from "firebase/auth";
 
-const SCHOOL_LOCATION = { lat: 13.7428992, lng: 100.450304 };
-const RADIUS = 100;
+const SCHOOL_LOCATION = { lat: 13.7428992, lng: 100.450304 }; //  ตำแหน่งของโรงเรียน
+const RADIUS = 100; //รัศมี 100 เมตร
 const db = getFirestore();
 
 export default function AttendanceTracker() {
@@ -131,9 +131,18 @@ export default function AttendanceTracker() {
     });
   }
 
-  function signInWithGoogle() {
+ function signInWithGoogle() {
     signInWithPopup(auth, provider)
-      .then((result) => setUser(result.user))
+      .then((result) => {
+        const email = result.user.email;
+        if (email.endsWith("@satitpatumwan.ac.th")) {
+          setUser(result.user);
+          setIsValidEmail(true);
+        } else {
+          alert("❌ กรุณาใช้ Email ของโรงเรียน (@satitpatumwan.ac.th) เท่านั้น!");
+          auth.signOut();
+        }
+      })
       .catch((error) => console.error("Error during sign-in: ", error));
   }
 
@@ -181,7 +190,7 @@ export default function AttendanceTracker() {
             className="mt-6 w-full bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 rounded-full shadow-lg transition-all transform hover:scale-105"
             onClick={signInWithGoogle}
           >
-            🔑 เข้าสู่ระบบด้วย Google
+            🔑 เข้าสู่ระบบด้วย Email ของโรงเรียน
           </button>
         )}
       </div>
